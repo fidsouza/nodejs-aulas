@@ -18,6 +18,11 @@
   },
   "homepage": "https://github.com/fidsouza/nodejs-aulas#readme",
   "dependencies": {
-    "axios": "^0.21.0"
+    "axios": "^0.21.0",
+    "moca": "^0.4.3",
+    "nock": "^13.0.5"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1"
   }
 }
