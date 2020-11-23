@@ -1,4 +1,4 @@
-const {ok,deepEqual} = require('assert')
+const {deepEqual} = require('assert')
 
 const DEFAULT_ITEM_CADASTRADO = {
     nome:'Flash',
@@ -17,6 +17,9 @@ describe('Suite de manipulação de Heróis',()=>{
     before(async () => {
         await database.cadastrar(DEFAULT_ITEM_CADASTRADO),
         await database.cadastrar(DEFAULT_ITEM_ATUALIZAR)
+    })
+    after(async()=> {
+        await database.remover()
     })
     it('deve pesquisar um herói, usando arquivos.', async () => {
         const expected = DEFAULT_ITEM_CADASTRADO
