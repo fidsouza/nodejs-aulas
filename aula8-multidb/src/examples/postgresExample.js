@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
+
 const driver    = new Sequelize(
-    'herois',  //database
+    'heroes',  //database
     'fidsouza',//user
     'minhasenhanova', //password
     {
@@ -29,6 +30,17 @@ async function main(){
             type:Sequelize.STRING,
             required:true
         }
-
+    },{
+        tableName: 'TB_HEROIS',
+        freezeTableName: false,
+        timestamps: false
     })
+    await Herois.sync()
+    await Herois.create({
+        nome: 'Homem Formiga',
+        poder: 'Ficar pequeno',
+    })
+    const result = await Herois.findAll({raw:true})
+    console.log('result',result)
 }
+main()
