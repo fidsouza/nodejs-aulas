@@ -22,7 +22,10 @@
     "comander": "0.0.1-security",
     "commander": "^6.2.0",
     "moca": "^0.4.3",
-    "nock": "^13.0.5"
+    "nock": "^13.0.5",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5"
   },
   "devDependencies": {
     "mocha": "^8.2.1"
