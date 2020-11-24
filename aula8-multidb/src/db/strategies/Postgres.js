@@ -1,10 +1,6 @@
 const ICrud = require('./interface/ICrud')
-<<<<<<< HEAD
-const Sequelize = require('sequilize')
-=======
 const Sequelize = require('sequelize')
 
->>>>>>> c05248336604237f55df6b54dd44ef956fbf0838
 
 class Postgres extends ICrud{
     constructor(){
@@ -12,7 +8,6 @@ class Postgres extends ICrud{
         this._driver = null
         this._herois = null
         this._connect()
-<<<<<<< HEAD
     }
     async isConnected(){
         try {
@@ -22,7 +17,7 @@ class Postgres extends ICrud{
             console.error('Erro inesperado:',error)
         }
     }
-    defineModel(){
+   async defineModel(){
          this._herois = _driver.define('herois',{
             id:{
                 type:Sequelize.INTEGER,
@@ -55,9 +50,6 @@ class Postgres extends ICrud{
                 operatorAliases:false
             }        
         )
-
-=======
->>>>>>> c05248336604237f55df6b54dd44ef956fbf0838
     }
     create(item){
         console.log('cadastrado no postgres')
