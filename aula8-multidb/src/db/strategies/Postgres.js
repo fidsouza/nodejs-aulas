@@ -7,7 +7,6 @@ class Postgres extends ICrud{
         super()
         this._driver = null
         this._herois = null
-        this._connect()
     }
     async isConnected(){
         try {
@@ -18,7 +17,7 @@ class Postgres extends ICrud{
         }
     }
    async defineModel(){
-         this._herois = _driver.define('herois',{
+         this._herois = this._driver.define('heroes',{
             id:{
                 type:Sequelize.INTEGER,
                 required: true,
@@ -36,36 +35,20 @@ class Postgres extends ICrud{
             }
     
         })
-        await Herois.sync()
+        await this._herois.sync()
     }
-    _connect(){
-        this._driver = new Sequelize(
-            'herois',  //database
-            'fidsouza',//user
-            'minhasenhanova', //password
-            {
-                host:'localhost',
-                dialect:'postgres',
-                quoteIdentifiers:false,
-                operatorAliases:false
-            }        
-        )
-    }
-    create(item){
-        console.log('cadastrado no postgres')
-    }
-
-    async isConnected(){
+    async create(item){
         try {
-            await this._driver.authenticate()
-            return true
-            
+            const {dataValues:{
+                nome,
+                poder
+            }} = await this._herois.create(item)
+            return {nome,poder}
         } catch (error) {
-            console.error('Erro Inesperado:',error)
+            console.error('Error Inesperado ao Cadastrar',error)
         }
     }
-
-    _connect(){
+    async connect(){
         this._driver    = new Sequelize(
              'heroes',  //database
              'fidsouza',//user
@@ -78,30 +61,7 @@ class Postgres extends ICrud{
              }
          
          )
-     }
- 
-     _defineModel(){
-         this._herois = driver.define('herois',{
-             id:{
-                 type:Sequelize.INTEGER,
-                 required: true,
-                 primaryKey: true,
-                 autoIncrement: true
-             },
-             nome:{
-                 type:Sequelize.STRING,
-                 required:true
-     
-             },
-             poder:{
-                 type:Sequelize.STRING,
-                 required:true
-             }
-         },{
-             tableName: 'TB_HEROIS',
-             freezeTableName: false,
-             timestamps: false
-         })
+         await this.defineModel()
      }
 
 
