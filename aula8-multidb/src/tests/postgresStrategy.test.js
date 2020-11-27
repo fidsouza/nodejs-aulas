@@ -24,4 +24,8 @@ describe('Teste estratégia PostGres', function ()  {
         delete result.id
         assert.deepEqual(result,MOCK_HEROI_CADASTRAR)
     })
+    it('Retornar Heróis',async()=>{
+        const result = await context.read({nome:MOCK_HEROI_CADASTRAR.nome})
+        assert.deepEqual(result,MOCK_HEROI_CADASTRAR)
+    })
 })

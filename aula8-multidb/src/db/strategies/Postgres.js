@@ -48,6 +48,14 @@ class Postgres extends ICrud{
             console.error('Error Inesperado ao Cadastrar',error)
         }
     }
+    async read(item ={}){
+        try {
+            const {nome,poder} =  await this._herois.findOne({where:item,raw:true})
+            return {nome,poder}
+        } catch (error) {
+            console.error('Erro ao realizar a consulta',error)
+        }
+    }
     async connect(){
         this._driver    = new Sequelize(
              'heroes',  //database
