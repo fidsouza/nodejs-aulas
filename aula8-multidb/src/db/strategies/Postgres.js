@@ -50,10 +50,17 @@ class Postgres extends ICrud{
     }
     async read(item ={}){
         try {
-            const {nome,poder} =  await this._herois.findOne({where:item,raw:true})
-            return {nome,poder}
+            const {id,nome,poder} =  await this._herois.findOne({where:item,raw:true})
+            return {id,nome,poder}
         } catch (error) {
             console.error('Erro ao realizar a consulta',error)
+        }
+    }
+    async update(id,item){
+        try {
+            return await this._herois.update(item,{where:{id:id}})
+        } catch (error) {
+            console.error('Erro ao atualizar',error)
         }
     }
     async connect(){
