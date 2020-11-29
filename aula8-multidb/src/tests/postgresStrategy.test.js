@@ -18,6 +18,7 @@ describe('Teste estratégia PostGres', function ()  {
     this.timeout(Infinity)
     this.beforeAll(async function(){
         await context.connect()
+        await context.create(MOCK_HEROI_CADASTRAR)
     })
     it('Postgres Connection', async() => {
         const result = await context.isConnected()
@@ -36,8 +37,12 @@ describe('Teste estratégia PostGres', function ()  {
     })
     it('Atualizar Herói',async () => {
         const itemAtualizar = await context.read({nome:MOCK_HEROI_CADASTRAR.nome})
-        const [result] = await context.update(itemAtualizar.id,MOCK_HEROI_ATUALIZAR)
+        const result = await context.update(itemAtualizar.id,MOCK_HEROI_ATUALIZAR)
 
-        assert.deepEqual(result,1)
+        delete result.id
+        delete result.createdat
+        delete result.updatedat
+
+        assert.deepEqual(result,MOCK_HEROI_ATUALIZAR)
     })
 })

@@ -58,7 +58,8 @@ class Postgres extends ICrud{
     }
     async update(id,item){
         try {
-            return await this._herois.update(item,{where:{id:id}})
+            const result =  await this._herois.update(item,{where:{id:id},returning:true})
+            return result[1][0].get()
         } catch (error) {
             console.error('Erro ao atualizar',error)
         }
