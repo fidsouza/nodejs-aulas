@@ -64,6 +64,15 @@ class Postgres extends ICrud{
             console.error('Erro ao atualizar',error)
         }
     }
+    async delete(id){
+        try {
+            const query = id ? {id}  : console.error('ID para deleção Inválido')
+            return await this._herois.destroy({where:query})
+
+        } catch (error) {
+            console.error('Erro inesperado ao deletar',error)
+        }
+    }
     async connect(){
         this._driver    = new Sequelize(
              'heroes',  //database
