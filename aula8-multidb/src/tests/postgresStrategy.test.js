@@ -45,4 +45,10 @@ describe('Teste estratégia PostGres', function ()  {
 
         assert.deepEqual(result,MOCK_HEROI_ATUALIZAR)
     })
+    it.only('remover por id',async() => {
+        const item = await context.read({})
+        const result = await context.delete(item.id)
+
+        assert.deepEqual(result,1)
+    })
 })
