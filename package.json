@@ -22,6 +22,7 @@
     "comander": "0.0.1-security",
     "commander": "^6.2.0",
     "moca": "^0.4.3",
+    "mongoose": "^5.11.4",
     "nock": "^13.0.5",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
