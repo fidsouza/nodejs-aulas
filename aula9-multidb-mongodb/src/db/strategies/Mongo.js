@@ -1,65 +1,71 @@
 const ICrud = require('./interface/ICrud')
-
+const Mongoose = require('mongoose')
+const STATUS = {
+    0:'Disconectado',
+    1:'Conectando',
+    2:'Conectado',
+    3:'Disconectado'
+}
 
 
 class MongoDB extends ICrud{
     constructor(){
         super()
+        this._herois=null
+        this._driver=null
 
-    }
-    create(item){
-        console.log('cadastrado no mongo')
     }
 
     async isConnected(){
-        try {
-            await this._driver.authenticate()
-            return true
-            
-        } catch (error) {
-            console.error('Erro Inesperado:',error)
-        }
-    }
 
+        const state = STATUS[this._driver.readyState]
+        if(state === 'Conectado') return state;
+        if(state !== 'Conectando') return state;
 
-    _connect(){
-       this._driver    = new Sequelize(
-            'heroes',  //database
-            'fidsouza',//user
-            'minhasenhanova', //password
-            {
-                host:'localhost',
-                dialect:'postgres',
-                quoteIdentifiers:false,
-                operatorAliases:false
-            }
-        
-        )
+        await new Promise(resolve => setTimeout(resolve,1000))
+
+        return STATUS[this._driver.readyState]
+
     }
 
     _defineModel(){
-        this._herois = driver.define('herois',{
-            id:{
-                type:Sequelize.INTEGER,
-                required: true,
-                primaryKey: true,
-                autoIncrement: true
-            },
+        const heroiSchema= new Mongoose.Schema({
             nome:{
-                type:Sequelize.STRING,
+                type:String,
                 required:true
-    
             },
             poder:{
-                type:Sequelize.STRING,
+                type:String,
                 required:true
+            },
+            insertedAt:{
+                type:Date,
+                default:new Date()
             }
-        },{
-            tableName: 'TB_HEROIS',
-            freezeTableName: false,
-            timestamps: false
+        
         })
+         this._herois = Mongoose.model('herois',heroiSchema)
+
     }
+
+    connect(){
+
+        Mongoose.connect('mongodb://fidsouza:minhasenhanode@localhost:27017/herois',
+        {useNewUrlParser:true,useUnifiedTopology: true},(error) =>{
+            if(!error) return;
+            console.error('Falha na conexao',error)
+        })
+        this._driver = Mongoose.connection
+        this._driver.once('open',() =>console.log('database rodando'))
+
+        this._defineModel()
+
+    }
+
+    create(){
+
+    }
+
 }
 
 module.exports = MongoDB

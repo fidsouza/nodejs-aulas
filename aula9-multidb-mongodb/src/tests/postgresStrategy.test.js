@@ -2,7 +2,6 @@ const assert = require('assert')
 const Postgres    = require('../db/strategies/Postgres')
 const Context     = require('../db/strategies/base/ContextStratagy')
 
-const Heroi       = require('../models/heroi')
 
 const context = new Context(new Postgres())
 const MOCK_HEROI_CADASTRAR = {
