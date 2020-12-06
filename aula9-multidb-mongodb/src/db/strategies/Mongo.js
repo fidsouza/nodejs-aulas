@@ -62,8 +62,8 @@ class MongoDB extends ICrud{
 
     }
 
-    create(){
-
+  async  create(item){
+        return await this._herois.create(item)
     }
 
 }
