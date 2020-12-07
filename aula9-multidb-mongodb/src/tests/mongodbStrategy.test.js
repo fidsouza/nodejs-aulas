@@ -11,6 +11,12 @@ const MOCK_HEROI_CADASTRAR_DEFAULT = {
     nome:`Gaviào Arqueiro - ${Date.now()}`,
     poder:'Velocidade e Pontaria'
 }
+const MOCK_HEROI_CADASTRAR_UPDATE = {
+    nome:`Joana Dark - ${Date.now()}`,
+    poder:'Guerreira'
+}
+
+let MOCK_HEROI_ID = ''
 
 const context = new Context(new MongoDB())
 
@@ -18,6 +24,8 @@ describe('MongoDB suite de testes', function() {
     this.beforeAll(async()=> {
         await context.connect()
         await context.create(MOCK_HEROI_CADASTRAR_DEFAULT)
+        const resultUpdate = await context.create(MOCK_HEROI_CADASTRAR_UPDATE)
+        MOCK_HEROI_ID = resultUpdate._id
     })
     it('verifica conexão', async()=>{
         const result = await context.isConnected()
@@ -35,7 +43,13 @@ describe('MongoDB suite de testes', function() {
             nome,
             poder
         }
-        console.log('Result Read',result)
         assert.deepEqual(result,MOCK_HEROI_CADASTRAR_DEFAULT)
+    })
+    it('Atualizar Heroi', async()=>{
+        const result =  await context.update(MOCK_HEROI_ID,{
+            nome:'Homem Aranha'
+        })
+        assert.deepEqual(result.nModified,1)
+
     })
 })
