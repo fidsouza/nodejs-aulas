@@ -2,8 +2,8 @@ const ICrud = require('./interface/ICrud')
 const Mongoose = require('mongoose')
 const STATUS = {
     0:'Disconectado',
-    1:'Conectando',
-    2:'Conectado',
+    1:'Conectado',
+    2:'Conectando',
     3:'Disconectado'
 }
 
@@ -20,10 +20,8 @@ class MongoDB extends ICrud{
 
         const state = STATUS[this._driver.readyState]
         if(state === 'Conectado') return state;
-        if(state !== 'Conectando') return state;
 
         await new Promise(resolve => setTimeout(resolve,1000))
-
         return STATUS[this._driver.readyState]
 
     }
@@ -65,6 +63,11 @@ class MongoDB extends ICrud{
   async  create(item){
         return await this._herois.create(item)
     }
+
+ async read(item,skip=0,limit=10){
+
+       return await this._herois.find(item).skip(skip).limit(limit)
+ }
 
 }
 

@@ -7,11 +7,17 @@ const MOCK_HEROI_CADASTRAR = {
     poder:'Velocidade e Pontaria'
 }
 
+const MOCK_HEROI_CADASTRAR_DEFAULT = {
+    nome:`Gaviào Arqueiro - ${Date.now()}`,
+    poder:'Velocidade e Pontaria'
+}
+
 const context = new Context(new MongoDB())
 
 describe('MongoDB suite de testes', function() {
     this.beforeAll(async()=> {
         await context.connect()
+        await context.create(MOCK_HEROI_CADASTRAR_DEFAULT)
     })
     it('verifica conexão', async()=>{
         const result = await context.isConnected()
@@ -22,5 +28,14 @@ describe('MongoDB suite de testes', function() {
     it('Cadastrar Heroi',async()=>{
         const {nome,poder} = await context.create(MOCK_HEROI_CADASTRAR)
         assert.deepEqual({nome,poder},MOCK_HEROI_CADASTRAR)
+    })
+    it('Listar Heroi',async()=>{
+        const [{nome,poder}] = await context.read({nome:MOCK_HEROI_CADASTRAR_DEFAULT.nome})
+        const result = {
+            nome,
+            poder
+        }
+        console.log('Result Read',result)
+        assert.deepEqual(result,MOCK_HEROI_CADASTRAR_DEFAULT)
     })
 })
