@@ -1,9 +1,11 @@
 const assert = require('assert')
-const Postgres    = require('../db/strategies/Postgres')
+const Postgres    = require('../db/strategies/postgres/Postgres')
 const Context     = require('../db/strategies/base/ContextStratagy')
 
+const HeroiSchema = require('../db/strategies/postgres/schemas/heroiSchema')
 
-const context = new Context(new Postgres())
+
+
 const MOCK_HEROI_CADASTRAR = {
     nome:'Mestre Kami',
     poder: 'Kamehameha'
@@ -13,10 +15,15 @@ const MOCK_HEROI_ATUALIZAR = {
     poder: 'Inteligência'
 }
 
+let context = {}
+
 describe('Teste estratégia PostGres', function ()  {
     this.timeout(Infinity)
     this.beforeAll(async function(){
-        await context.connect()
+        const connection = await Postgres.connect()
+        const model = await Postgres.defineModel(connection,HeroiSchema)
+        context = new Context(new Postgres(connection,model))
+
         await context.create(MOCK_HEROI_CADASTRAR)
     })
     it('Postgres Connection', async() => {
@@ -44,7 +51,7 @@ describe('Teste estratégia PostGres', function ()  {
 
         assert.deepEqual(result,MOCK_HEROI_ATUALIZAR)
     })
-    it.only('remover por id',async() => {
+    it('remover por id',async() => {
         const item = await context.read({})
         const result = await context.delete(item.id)
 

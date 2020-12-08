@@ -1,48 +1,34 @@
-const ICrud = require('./interface/ICrud')
+const ICrud = require('../interface/ICrud')
 const Sequelize = require('sequelize')
 
 
 class Postgres extends ICrud{
-    constructor(){
+    constructor(connection,schema){
         super()
-        this._driver = null
-        this._herois = null
+        this._connection = connection
+        this._schema = schema
     }
     async isConnected(){
         try {
-            await this._driver.authenticate()
+            await this._connection.authenticate()
             return true
         } catch (error) {
             console.error('Erro inesperado:',error)
         }
     }
-   async defineModel(){
-         this._herois = this._driver.define('heroes',{
-            id:{
-                type:Sequelize.INTEGER,
-                required: true,
-                primaryKey: true,
-                autoIncrement: true
-            },
-            nome:{
-                type:Sequelize.STRING,
-                required:true
-    
-            },
-            poder:{
-                type:Sequelize.STRING,
-                required:true
-            }
-    
-        })
-        await this._herois.sync()
+   static async defineModel(connection,schema){
+        const model = connection.define(
+            schema.name,schema.schema
+        )
+        await model.sync()
+        return model
     }
     async create(item){
         try {
             const {dataValues:{
                 nome,
                 poder
-            }} = await this._herois.create(item)
+            }} = await this._schema.create(item)
             return {nome,poder}
         } catch (error) {
             console.error('Error Inesperado ao Cadastrar',error)
@@ -50,7 +36,7 @@ class Postgres extends ICrud{
     }
     async read(item ={}){
         try {
-            const {id,nome,poder} =  await this._herois.findOne({where:item,raw:true})
+            const {id,nome,poder} =  await this._schema.findOne({where:item,raw:true})
             return {id,nome,poder}
         } catch (error) {
             console.error('Erro ao realizar a consulta',error)
@@ -58,7 +44,7 @@ class Postgres extends ICrud{
     }
     async update(id,item){
         try {
-            const result =  await this._herois.update(item,{where:{id:id},returning:true})
+            const result =  await this._schema.update(item,{where:{id:id},returning:true})
             return result[1][0].get()
         } catch (error) {
             console.error('Erro ao atualizar',error)
@@ -67,14 +53,14 @@ class Postgres extends ICrud{
     async delete(id){
         try {
             const query = id ? {id}  : console.error('ID para deleção Inválido')
-            return await this._herois.destroy({where:query})
+            return await this._schema.destroy({where:query})
 
         } catch (error) {
             console.error('Erro inesperado ao deletar',error)
         }
     }
-    async connect(){
-        this._driver    = new Sequelize(
+   static async connect(){
+      const connection =   this._connection    = new Sequelize(
              'heroes',  //database
              'fidsouza',//user
              'minhasenhanova', //password
@@ -82,11 +68,13 @@ class Postgres extends ICrud{
                  host:'localhost',
                  dialect:'postgres',
                  quoteIdentifiers:false,
-                 operatorAliases:false
+                 operatorAliases:false,
+                 logging:false
+                 
              }
          
          )
-         await this.defineModel()
+      return connection
      }
 
 
