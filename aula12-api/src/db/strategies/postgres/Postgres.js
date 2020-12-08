@@ -34,9 +34,9 @@ class Postgres extends ICrud{
             console.error('Error Inesperado ao Cadastrar',error)
         }
     }
-    async read(item ={}){
+    async read(item ={},skip,limit){
         try {
-            const result =  await this._schema.findAll({where:item,raw:true})
+            const result =  await this._schema.findAll({where:item,raw:true,skip:skip,limit:limit})
             return result
         } catch (error) {
             console.error('Erro ao realizar a consulta',error)
