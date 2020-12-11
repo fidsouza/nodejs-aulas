@@ -26,10 +26,11 @@ class Postgres extends ICrud{
     async create(item){
         try {
             const {dataValues:{
+                id,
                 nome,
                 poder
             }} = await this._schema.create(item)
-            return {nome,poder}
+            return {id,nome,poder}
         } catch (error) {
             console.error('Error Inesperado ao Cadastrar',error)
         }
