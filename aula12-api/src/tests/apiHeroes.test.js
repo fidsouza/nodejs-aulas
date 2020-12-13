@@ -77,7 +77,7 @@ describe('Testes da API Heroes', function(){
         assert.ok(statusCode === 200)
         assert.deepEqual({nome,poder},MOCK_HEROI_CADASTRAR)
     })
-    it('Atualizar Heroi',async()=>{
+    it.only('Atualizar Heroi',async()=>{
         const id = MOCK_ID_ATUALIZAR.id
         const expected = {
             poder:'Super Verde'
@@ -92,8 +92,8 @@ describe('Testes da API Heroes', function(){
         const dados = JSON.parse(result.payload)
 
 
-
         assert.ok(statusCode === 200)
         assert.deepEqual(dados.poder,expected.poder)
+
     })
 })
