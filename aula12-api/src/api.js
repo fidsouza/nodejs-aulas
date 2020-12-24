@@ -25,7 +25,7 @@ async function main(){
         ...mapRoutes(new HeroRoutes(context),HeroRoutes.methods())
     ])
     await app.start()
-    console.log('api ok')
+    console.log('api ok e voando 🚀 na porta 5000')
     return app
 }
 
