@@ -21,7 +21,9 @@ class HeroRoutes extends BaseRoute{
                         limit:Joi.number().integer().default(10)
                     })
                     
-                    const {value} = schema.validate({skip:skip,limit:limit})
+                    const {value,error} = schema.validate({skip:skip,limit:limit})
+                    if(error)
+                        return console.log('Erro na validação',error.details[0].message)
 
                     return this.db.read(query,parseInt(value.skip),parseInt(value.limit))
 

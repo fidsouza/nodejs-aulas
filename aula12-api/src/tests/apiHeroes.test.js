@@ -60,6 +60,7 @@ describe('Testes da API Heroes', function(){
 
 
         assert.deepEqual(statusCode,200)
+        console.log('dados length',dados.length)
         assert.ok(dados.length === TAMANHO_LIMITE)
     })
 
@@ -96,7 +97,7 @@ describe('Testes da API Heroes', function(){
         assert.deepEqual(dados.poder,expected.poder)
 
     })
-    it.only('Remover DELETE /herois/id',async()=>{
+    it('Remover DELETE /herois/id',async()=>{
 
         const id = MOCK_ID_ATUALIZAR.id
         const result = await app.inject({
