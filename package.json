@@ -4,7 +4,9 @@
   "description": "Aulas de nodejs que estou fazendo para rever conceitos.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev":"nodemon ./aula13-api-swagger/src/api.js --ignore-watch"
+
   },
   "repository": {
     "type": "git",
@@ -18,17 +20,21 @@
   },
   "homepage": "https://github.com/fidsouza/nodejs-aulas#readme",
   "dependencies": {
+    "@hapi/hapi": "^20.0.3",
+    "@hapi/inert": "^6.0.3",
+    "@hapi/vision": "^6.0.1",
     "axios": "^0.21.0",
     "comander": "0.0.1-security",
     "commander": "^6.2.0",
-    "hapi": "^18.1.0",
+    "hapi-swagger": "^14.0.0",
     "joi": "^17.3.0",
     "moca": "^0.4.3",
     "mongoose": "^5.11.4",
     "nock": "^13.0.5",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "vision": "^5.4.4"
   },
   "devDependencies": {
     "mocha": "^8.2.1"
